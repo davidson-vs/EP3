@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <math.h>
 // constante que define o valor maximo que um pixel pode assumir.
 
 #define VALOR_MAXIMO 255
@@ -70,11 +70,11 @@ Imagem *cria_imagem(int largura, int altura)
          imagem->matriz[i][j] = 0;
       }
    }
+   return imagem;
    /* 
 	  Você deve completar esta função para que ela inicialize corretamente a estrutura ja alocada,
 	  incluindo a alocacao dinâmica do campo 'matriz' de acordo com a largura e altura fornecidas. 
    */
-   return imagem;
 }
 
 // funcao (ja completa) que libera os recursos de memoria associados a uma imagem.
@@ -136,7 +136,20 @@ void salva(Imagem *imagem, char *nomeArquivo)
 
 void reta(Imagem *imagem, Ponto2D p1, Ponto2D p2, int cor)
 {
+   int deltaX = p2.x - p1.x;
+   int deltaY = p2.y - p1.y;
+   int i, k;
+   float inclinacao = ceil(deltaX / deltaY);
 
+   for (i = 0; imagem->altura; i++)
+   {
+      k = i * inclinacao;
+      imagem->matriz[k][i] = cor;
+      if (i * inclinacao > imagem->largura)
+      {
+         break;
+      }
+   }
    /* completar */
 }
 
