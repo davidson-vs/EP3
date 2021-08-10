@@ -48,14 +48,32 @@ Imagem *cria_imagem(int largura, int altura)
 
    Imagem *imagem = (Imagem *)malloc(sizeof(Imagem));
 
-   imagem->altura = 0;  // isto está correto?
-   imagem->largura = 0; // e isto?
+   imagem->altura = altura;   // isto está correto?
+   imagem->largura = largura; // e isto?
 
+   imagem->matriz = (int **)malloc(imagem->altura * sizeof(int *));
+
+   int i, j;
+   int k = 0;
+
+   imagem->matriz[i] = (int **)malloc(imagem->altura * sizeof(int *));
+
+   for (k = 0; k < imagem->altura; k++)
+   {
+      imagem->matriz[k] = (int *)malloc(imagem->largura * sizeof(int *));
+   }
+
+   for (i = 0; i < imagem->altura; i++)
+   {
+      for (j = 0; j < imagem->largura; j++)
+      {
+         imagem->matriz[i][j] = 0;
+      }
+   }
    /* 
 	  Você deve completar esta função para que ela inicialize corretamente a estrutura ja alocada,
 	  incluindo a alocacao dinâmica do campo 'matriz' de acordo com a largura e altura fornecidas. 
-        */
-
+   */
    return imagem;
 }
 
