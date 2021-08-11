@@ -136,26 +136,27 @@ void reta(Imagem *imagem, Ponto2D p1, Ponto2D p2, int cor)
 {
    int deltaX = p2.x - p1.x;
    int deltaY = p2.y - p1.y;
-   int tamanho;
+   int tamanho, x, y;
 
-   if (deltaX > deltaY)
+   if (abs(deltaX) > abs(deltaY))
    {
-      tamanho = deltaX;
+      tamanho = abs(deltaX);
    }
    else
    {
-      tamanho = deltaY;
+      tamanho = abs(deltaY);
    }
-   float inclinacaoX = ceil(deltaX / tamanho);
-   float inclinacaoY = ceil(deltaY / tamanho);
    int i;
 
-   for (i = 1; i <= tamanho; i++)
-   {
-      imagem->matriz[p1.x][p1.y] = cor;
+   float inclinacaoX = round(deltaX / tamanho);
+   float inclinacaoY = round(deltaY / tamanho);
 
-      p1.x += inclinacaoX;
-      p1.y += inclinacaoY;
+   for (i = 0; i <= tamanho; i++)
+   {
+      x = round(p1.x + (i * inclinacaoX));
+      y = round(p1.y + (i * inclinacaoY));
+
+      imagem->matriz[y][x] = cor;
    }
    /* completar */
 }
@@ -494,11 +495,11 @@ int main()
          scanf("%d %d %d %d %d %d", &p1.x, &p1.y, &p2.x, &p2.y, &p3.x, &p3.y);
          clona_espelha_horizontal(img, p1, p2, p3);
       }
-      // if ((strcmp(operacao, "CLONA_VER") == 0))
-      // {
-      //    scanf("%d %d %d %d %d %d", &p1.x, &p1.y, &p2.x, &p2.y, &p3.x, &p3.y);
-      //    clona_espelha_vertical(img, p1, p2, p3);
-      // }
+      if ((strcmp(operacao, "CLONA_VER") == 0))
+      {
+         scanf("%d %d %d %d %d %d", &p1.x, &p1.y, &p2.x, &p2.y, &p3.x, &p3.y);
+         clona_espelha_vertical(img, p1, p2, p3);
+      }
       /* completar */
 
       // voce deve verificar o conteudo da string 'operacao' para definir qual a operacao
