@@ -1,5 +1,5 @@
 // Davidson Vieira de Souza Nº USP:12611668
-// Gabriel Jasen Marques Nº USP:
+// Gabriel Jasen Marques Nº USP:12542741
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -55,8 +55,6 @@ Imagem *cria_imagem(int largura, int altura)
 
    int i, j;
    int k = 0;
-
-   imagem->matriz[i] = (int **)malloc(imagem->altura * sizeof(int *));
 
    for (k = 0; k < imagem->altura; k++)
    {
@@ -141,7 +139,7 @@ void reta(Imagem *imagem, Ponto2D p1, Ponto2D p2, int cor)
    int i, k;
    float inclinacao = ceil(deltaX / deltaY);
 
-   for (i = 0; imagem->altura; i++)
+   for (i = 0; i < imagem->altura; i++)
    {
       k = i * inclinacao;
       imagem->matriz[k][i] = cor;
@@ -158,7 +156,63 @@ void reta(Imagem *imagem, Ponto2D p1, Ponto2D p2, int cor)
 
 void retangulo_contorno(Imagem *imagem, Ponto2D p1, Ponto2D p2, int cor)
 {
+   int i, j;
+   if (p1.y < p2.y && p1.x < p2.x)
+   {
+      for (j = p1.x; j <= p2.x; j++)
+      {
 
+         imagem->matriz[p1.y][j] = cor;
+         imagem->matriz[p2.y][j] = cor;
+      }
+      for (i = p1.y; i <= p2.y; i++)
+      {
+         imagem->matriz[i][p1.x] = cor;
+         imagem->matriz[i][p2.x] = cor;
+      }
+   }
+
+   if (p1.y > p2.y && p1.x < p2.x)
+   {
+      for (j = p1.x; j <= p2.x; j++)
+      {
+         imagem->matriz[p2.y][j] = cor;
+         imagem->matriz[p1.y][j] = cor;
+      }
+      for (i = p2.y; i <= p1.y; i++)
+      {
+         imagem->matriz[i][p1.x] = cor;
+         imagem->matriz[i][p2.x] = cor;
+      }
+   }
+
+   if (p1.y < p2.y && p1.x > p2.x)
+   {
+      for (j = p1.x; j <= p2.x; j++)
+      {
+         imagem->matriz[p1.y][j] = cor;
+         imagem->matriz[p2.y][j] = cor;
+      }
+      for (i = p2.y; i <= p1.y; i++)
+      {
+         imagem->matriz[i][p2.x] = cor;
+         imagem->matriz[i][p1.x] = cor;
+      }
+   }
+
+   if (p1.y > p2.y && p1.x > p2.x)
+   {
+      for (j = p1.x; j <= p2.x; j++)
+      {
+         imagem->matriz[p2.y][j] = cor;
+         imagem->matriz[p1.y][j] = cor;
+      }
+      for (i = p2.y; i <= p1.y; i++)
+      {
+         imagem->matriz[i][p2.x] = cor;
+         imagem->matriz[i][p1.x] = cor;
+      }
+   }
    /* completar */
 }
 
@@ -168,6 +222,51 @@ void retangulo_contorno(Imagem *imagem, Ponto2D p1, Ponto2D p2, int cor)
 void retangulo_preenchido(Imagem *imagem, Ponto2D p1, Ponto2D p2, int cor)
 {
 
+   int i, j;
+   if (p1.y < p2.y && p1.x < p2.x)
+   {
+      for (i = p1.y; i <= p2.y; i++)
+      {
+         for (j = p1.x; j <= p2.x; j++)
+         {
+
+            imagem->matriz[i][j] = cor;
+         }
+      }
+   }
+
+   if (p1.y > p2.y && p1.x < p2.x)
+   {
+      for (i = p2.y; i <= p1.y; i++)
+      {
+         for (j = p1.x; j <= p2.x; j++)
+         {
+            imagem->matriz[i][j] = cor;
+         }
+      }
+   }
+
+   if (p1.y < p2.y && p1.x > p2.x)
+   {
+      for (i = p1.y; i <= p2.y; i++)
+      {
+         for (j = p2.x; j <= p1.x; j++)
+         {
+            imagem->matriz[i][j] = cor;
+         }
+      }
+   }
+
+   if (p1.y > p2.y && p1.x > p2.x)
+   {
+      for (i = p2.y; i <= p1.y; i++)
+      {
+         for (j = p2.x; j <= p1.x; j++)
+         {
+            imagem->matriz[i][j] = cor;
+         }
+      }
+   }
    /* completar */
 }
 
@@ -177,7 +276,50 @@ void retangulo_preenchido(Imagem *imagem, Ponto2D p1, Ponto2D p2, int cor)
 
 void clona(Imagem *imagem, Ponto2D p1, Ponto2D p2, Ponto2D p3)
 {
+   int i, j;
+   if (p1.y < p2.y && p1.x < p2.x)
+   {
+      for (i = p1.y; i <= p2.y; i++)
+      {
+         for (j = p1.x; j <= p2.x; j++)
+         {
+            imagem->matriz[p3.y + i - p1.y][p3.x + j - p1.x] = imagem->matriz[i][j];
+         }
+      }
+   }
 
+   if (p1.y > p2.y && p1.x < p2.x)
+   {
+      for (i = p2.y; i <= p1.y; i++)
+      {
+         for (j = p1.x; j <= p2.x; j++)
+         {
+            imagem->matriz[p3.y + i - p2.y][p3.x + j - p1.x] = imagem->matriz[i][j];
+         }
+      }
+   }
+
+   if (p1.y < p2.y && p1.x > p2.x)
+   {
+      for (i = p1.y; i <= p2.y; i++)
+      {
+         for (j = p2.x; j <= p1.x; j++)
+         {
+            imagem->matriz[p3.y + i - p1.y][p3.x + j - p2.x] = imagem->matriz[i][j];
+         }
+      }
+   }
+
+   if (p1.y > p2.y && p1.x > p2.x)
+   {
+      for (i = p2.y; i <= p1.y; i++)
+      {
+         for (j = p2.x; j <= p1.x; j++)
+         {
+            imagem->matriz[p3.y + i - p2.y][p3.x + j - p2.x] = imagem->matriz[i][j];
+         }
+      }
+   }
    /* completar */
 }
 
@@ -187,7 +329,50 @@ void clona(Imagem *imagem, Ponto2D p1, Ponto2D p2, Ponto2D p3)
 
 void clona_inverte_cor(Imagem *imagem, Ponto2D p1, Ponto2D p2, Ponto2D p3)
 {
+   int i, j;
+   if (p1.y < p2.y && p1.x < p2.x)
+   {
+      for (i = p1.y; i <= p2.y; i++)
+      {
+         for (j = p1.x; j <= p2.x; j++)
+         {
+            imagem->matriz[p3.y + i - p1.y][p3.x + j - p1.x] = 255 - imagem->matriz[i][j];
+         }
+      }
+   }
 
+   if (p1.y > p2.y && p1.x < p2.x)
+   {
+      for (i = p2.y; i <= p1.y; i++)
+      {
+         for (j = p1.x; j <= p2.x; j++)
+         {
+            imagem->matriz[p3.y + i - p2.y][p3.x + j - p1.x] = 255 - imagem->matriz[i][j];
+         }
+      }
+   }
+
+   if (p1.y < p2.y && p1.x > p2.x)
+   {
+      for (i = p1.y; i <= p2.y; i++)
+      {
+         for (j = p2.x; j <= p1.x; j++)
+         {
+            imagem->matriz[p3.y + i - p1.y][p3.x + j - p2.x] = 255 - imagem->matriz[i][j];
+         }
+      }
+   }
+
+   if (p1.y > p2.y && p1.x > p2.x)
+   {
+      for (i = p2.y; i <= p1.y; i++)
+      {
+         for (j = p2.x; j <= p1.x; j++)
+         {
+            imagem->matriz[p3.y + i - p2.y][p3.x + j - p2.x] = 255 - imagem->matriz[i][j];
+         }
+      }
+   }
    /* completar */
 }
 
@@ -195,7 +380,50 @@ void clona_inverte_cor(Imagem *imagem, Ponto2D p1, Ponto2D p2, Ponto2D p3)
 
 void clona_espelha_horizontal(Imagem *imagem, Ponto2D p1, Ponto2D p2, Ponto2D p3)
 {
+   int i, j;
+   if (p1.y < p2.y && p1.x < p2.x)
+   {
+      for (i = p1.y; i <= p2.y; i++)
+      {
+         for (j = p1.x; j <= p2.x; j++)
+         {
+            imagem->matriz[p3.y + i - p1.y][p3.x + p2.x - j] = imagem->matriz[i][j];
+         }
+      }
+   }
 
+   if (p1.y > p2.y && p1.x < p2.x)
+   {
+      for (i = p2.y; i <= p1.y; i++)
+      {
+         for (j = p1.x; j <= p2.x; j++)
+         {
+            imagem->matriz[p3.y + i - p2.y][p3.x + p2.x - j] = imagem->matriz[i][j];
+         }
+      }
+   }
+
+   if (p1.y < p2.y && p1.x > p2.x)
+   {
+      for (i = p1.y; i <= p2.y; i++)
+      {
+         for (j = p2.x; j <= p1.x; j++)
+         {
+            imagem->matriz[p3.y + i - p1.y][p3.x + p1.x - j] = imagem->matriz[i][j];
+         }
+      }
+   }
+
+   if (p1.y > p2.y && p1.x > p2.x)
+   {
+      for (i = p2.y; i <= p1.y; i++)
+      {
+         for (j = p2.x; j <= p1.x; j++)
+         {
+            imagem->matriz[p3.y + i - p2.y][p3.x + p1.x - j] = imagem->matriz[i][j];
+         }
+      }
+   }
    /* completar */
 }
 
@@ -203,7 +431,6 @@ void clona_espelha_horizontal(Imagem *imagem, Ponto2D p1, Ponto2D p2, Ponto2D p3
 
 void clona_espelha_vertical(Imagem *imagem, Ponto2D p1, Ponto2D p2, Ponto2D p3)
 {
-
    /* completar */
 }
 
@@ -219,13 +446,44 @@ int main()
    int largura, altura;
    char operacao[32], nome_arquivo[256];
    Imagem *img;
+   Ponto2D p1, p2, p3;
+   int cor;
 
    scanf("%s %d %d", nome_arquivo, &largura, &altura);
    img = cria_imagem(largura, altura);
 
    while (scanf("%s", operacao) == 1 && strcmp(operacao, FIM) != 0)
    {
-
+      if ((strcmp(operacao, "RETANGULO_CONTORNO") == 0))
+      {
+         scanf("%d %d %d %d %d %d", &p1.x, &p1.y, &p2.x, &p2.y, &p3.x, &p3.y);
+         retangulo_contorno(img, p1, p2, cor);
+      }
+      if (strcmp(operacao, "RETANGULO_PREENCHIDO") == 0)
+      {
+         scanf("%d %d %d %d %d", &p1.x, &p1.y, &p2.x, &p2.y, &cor);
+         retangulo_preenchido(img, p1, p2, cor);
+      }
+      if ((strcmp(operacao, "CLONA") == 0))
+      {
+         scanf("%d %d %d %d %d %d", &p1.x, &p1.y, &p2.x, &p2.y, &p3.x, &p3.y);
+         clona(img, p1, p2, p3);
+      }
+      if ((strcmp(operacao, "CLONA_INV") == 0))
+      {
+         scanf("%d %d %d %d %d %d", &p1.x, &p1.y, &p2.x, &p2.y, &p3.x, &p3.y);
+         clona_inverte_cor(img, p1, p2, p3);
+      }
+      if ((strcmp(operacao, "CLONA_HOR") == 0))
+      {
+         scanf("%d %d %d %d %d %d", &p1.x, &p1.y, &p2.x, &p2.y, &p3.x, &p3.y);
+         clona_espelha_horizontal(img, p1, p2, p3);
+      }
+      if ((strcmp(operacao, "CLONA_VER") == 0))
+      {
+         scanf("%d %d %d %d %d %d", &p1.x, &p1.y, &p2.x, &p2.y, &p3.x, &p3.y);
+         clona_espelha_vertical(img, p1, p2, p3);
+      }
       /* completar */
 
       // voce deve verificar o conteudo da string 'operacao' para definir qual a operacao
@@ -238,6 +496,6 @@ int main()
 
    salva(img, nome_arquivo);
    libera_imagem(img);
-
+   printf("terminou\n");
    return 0;
 }
