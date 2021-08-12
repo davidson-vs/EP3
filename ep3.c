@@ -41,15 +41,15 @@ typedef struct
 
 } Ponto2D;
 
-// funcao que cria uma imagem vazia e a devolve. Precisar ser completada para funcionar corretamente.
+// funcao que cria uma imagem vazia e a devolve.
 
 Imagem *cria_imagem(int largura, int altura)
 {
 
    Imagem *imagem = (Imagem *)malloc(sizeof(Imagem));
 
-   imagem->altura = altura;   // isto está correto?
-   imagem->largura = largura; // e isto?
+   imagem->altura = altura;
+   imagem->largura = largura;
 
    imagem->matriz = (int **)malloc(imagem->altura * sizeof(int *));
 
@@ -69,13 +69,7 @@ Imagem *cria_imagem(int largura, int altura)
       }
    }
    return imagem;
-   /* 
-	  Você deve completar esta função para que ela inicialize corretamente a estrutura ja alocada,
-	  incluindo a alocacao dinâmica do campo 'matriz' de acordo com a largura e altura fornecidas. 
-   */
 }
-
-// funcao (ja completa) que libera os recursos de memoria associados a uma imagem.
 
 void libera_imagem(Imagem *imagem)
 {
@@ -89,11 +83,6 @@ void libera_imagem(Imagem *imagem)
    free(imagem);         // liberacao da estrutura em si
 }
 
-// funcao (ja completa) que salva uma imagem em um arquivo, no formato PGM. Programas/utilitarios que trabalham
-// com imagens bitmap (como o Gimp e visualizadores de imagens normalmente instalados em ambiente Linux) em geral
-// reconhecem formato. Se tiver dificuldades para visualizar os arquivos de imagem salvos por esta funcao, um visualizador
-// online pode ser encontrado neste link: http://paulcuth.me.uk/netpbm-viewer/.
-
 void salva(Imagem *imagem, char *nomeArquivo)
 {
 
@@ -102,9 +91,6 @@ void salva(Imagem *imagem, char *nomeArquivo)
 
    if (saida)
    {
-
-      // o 'fprintf' funciona de forma igual ao 'printf', com a diferença que
-      // o conteudo eh escrito em um arquivo (associado a variavel 'saida')
 
       fprintf(saida, "P2\n%d %d\n%d\n", imagem->largura, imagem->altura, VALOR_MAXIMO);
 
@@ -123,12 +109,6 @@ void salva(Imagem *imagem, char *nomeArquivo)
 
    fclose(saida); // fechamento do arquivo
 }
-
-////////////////////////////////////////////////////////////////////////////////////////
-//                                                                                    //
-//  Funcoes que implementam as operacoes de desenho. Todas precisam ser completadas.  //
-//                                                                                    //
-////////////////////////////////////////////////////////////////////////////////////////
 
 // desenha uma reta que tem origem no ponto 'p1' e termina no ponto 'p2', na tonalidade de cinza definida em 'cor'.
 
@@ -158,11 +138,9 @@ void reta(Imagem *imagem, Ponto2D p1, Ponto2D p2, int cor)
 
       imagem->matriz[y][x] = cor;
    }
-   /* completar */
 }
 
 // desenha o contorno de um retangulo com cantos opostos em 'p1' e 'p2', na tonalidade de cinza definida em 'cor'.
-// Você não pode assumir nada em relacao a posicao dos cantos 'p1' e 'p2', apenas que tratam-se de cantos opostos.
 
 void retangulo_contorno(Imagem *imagem, Ponto2D p1, Ponto2D p2, int cor)
 {
@@ -223,11 +201,9 @@ void retangulo_contorno(Imagem *imagem, Ponto2D p1, Ponto2D p2, int cor)
          imagem->matriz[i][p1.x] = cor;
       }
    }
-   /* completar */
 }
 
 // desenha um retangulo preenchido com cantos opostos em 'p1' e 'p2', na tonalidade de cinza definida em 'cor'.
-// Você não pode assumir nada em relacao a posicao dos cantos 'p1' e 'p2', apenas que tratam-se de cantos opostos.
 
 void retangulo_preenchido(Imagem *imagem, Ponto2D p1, Ponto2D p2, int cor)
 {
@@ -277,12 +253,10 @@ void retangulo_preenchido(Imagem *imagem, Ponto2D p1, Ponto2D p2, int cor)
          }
       }
    }
-   /* completar */
 }
 
 // copia o conteudo da area compreendida no retangulo delimitado pelos cantos opostos 'p1' e 'p2' para uma região destino
-// na imagem. Para esta funcao, voce pode assumir que 'p1' representa o canto superior esquerdo da area a ser copiada,
-// 'p2' o canto inferior direito desta mesma area, e 'p3' o canto superior esquerdo da regiao que receberá a copia.
+// na imagem.
 
 void clona(Imagem *imagem, Ponto2D p1, Ponto2D p2, Ponto2D p3)
 {
@@ -330,7 +304,6 @@ void clona(Imagem *imagem, Ponto2D p1, Ponto2D p2, Ponto2D p3)
          }
       }
    }
-   /* completar */
 }
 
 // similar a funcao acima, mas invertendo o valor dos pixels copiados para a região destino. Isto é, pixels brancos devem
@@ -383,7 +356,6 @@ void clona_inverte_cor(Imagem *imagem, Ponto2D p1, Ponto2D p2, Ponto2D p3)
          }
       }
    }
-   /* completar */
 }
 
 // similar a funcao 'clona', mas espelhando horizontalmente a região copiada.
@@ -434,21 +406,57 @@ void clona_espelha_horizontal(Imagem *imagem, Ponto2D p1, Ponto2D p2, Ponto2D p3
          }
       }
    }
-   /* completar */
 }
 
 // similar a funcao 'clona', mas espelhando verticalmente a região copiada.
 
 void clona_espelha_vertical(Imagem *imagem, Ponto2D p1, Ponto2D p2, Ponto2D p3)
 {
-   /* completar */
-}
+   int i, j;
+   if (p1.y < p2.y && p1.x < p2.x)
+   {
+      for (j = p1.y; j <= p2.y; j++)
+      {
+         for (i = p1.x; i <= p2.x; i++)
+         {
+            imagem->matriz[p3.y + i - p1.y][p3.x + p2.x - j] = imagem->matriz[i][j];
+         }
+      }
+   }
 
-/////////////////////////////////////////////////////////
-//                                                     //
-//  Program principal. Também precisa ser completado.  //
-//                                                     //
-/////////////////////////////////////////////////////////
+   if (p1.y > p2.y && p1.x < p2.x)
+   {
+      for (j = p2.y; j <= p1.y; j++)
+      {
+         for (i = p1.x; i <= p2.x; i++)
+         {
+            imagem->matriz[p3.y + i - p2.y][p3.x + p2.x - j] = imagem->matriz[i][j];
+         }
+      }
+   }
+
+   if (p1.y < p2.y && p1.x > p2.x)
+   {
+      for (j = p1.y; j <= p2.y; j++)
+      {
+         for (i = p2.x; i <= p1.x; i++)
+         {
+            imagem->matriz[p3.y + i - p1.y][p3.x + p1.x - j] = imagem->matriz[i][j];
+         }
+      }
+   }
+
+   if (p1.y > p2.y && p1.x > p2.x)
+   {
+      for (j = p2.y; j <= p1.y; j++)
+      {
+         for (i = p2.x; i <= p1.x; i++)
+         {
+            imagem->matriz[p3.y + i - p2.y][p3.x + p1.x - j] = imagem->matriz[i][j];
+         }
+      }
+   }
+}
 
 int main()
 {
@@ -500,18 +508,9 @@ int main()
          scanf("%d %d %d %d %d %d", &p1.x, &p1.y, &p2.x, &p2.y, &p3.x, &p3.y);
          clona_espelha_vertical(img, p1, p2, p3);
       }
-      /* completar */
-
-      // voce deve verificar o conteudo da string 'operacao' para definir qual a operacao
-      // de desenho a ser realizada, e chamar a funcao adequada para tal. Nao se esqueca
-      // de ler os parametros adicionais esperados para a operacao a ser realizada. Caso
-      // o conteudo da string nao corresponda a nenhuma das operacoes reconhecidas (como
-      // as definidas nas constantes) voce pode simplesmente ignorar o comando na iteracao
-      // atual.
    }
 
    salva(img, nome_arquivo);
    libera_imagem(img);
-   printf("terminou\n");
    return 0;
 }
